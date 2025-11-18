@@ -1,13 +1,30 @@
-import { Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { WithSkiaWeb } from "@shopify/react-native-skia/lib/module/web";
+import React from "react";
+import { ActivityIndicator, Text, View } from "react-native";
+import { AsyncSkia } from "../components/async-skia";
+import Main from "../components/drawing-canvas";
 
-export default function Index() {
+const Iridescence = React.lazy(() => import("../components/iridescence"));
+
+export default function Page() {
   return (
-    <WithSkiaWeb
-      // import() uses the default export of MySkiaComponent.tsx
-      getComponent={() => import("@/components/main")}
-      fallback={<Text>Loading Skia...</Text>}
-    />
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View
+        style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+      >
+        <React.Suspense fallback={<ActivityIndicator />}>
+          <AsyncSkia />
+          <Main />
+        </React.Suspense>
+      </View>
+      <Text
+        style={{
+          fontSize: 32,
+          fontWeight: "bold",
+          fontStyle: "italic",
+        }}
+      >
+        Welcome to Expo
+      </Text>
+    </View>
   );
 }
